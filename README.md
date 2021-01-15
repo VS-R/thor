@@ -1,2 +1,2 @@
 # THOR
-THOR is a energy consumption simulator
+THOR is an energy consumption simulator
