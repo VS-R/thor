@@ -18,30 +18,32 @@
  * TODO: coloca funções principais ali
  * */
 
+// constantes pré-definidas pelo roteiro
 #define IVA 0.15
 #define TAXA_RTC 508
 #define IP_CONTRIB 100
 #define ALUGER 105
-
-// máx. de elementos do vetor de tipo estrutura
+// máx. de elementos do vetor de tipo estrutura, e string de nomes
 #define STRUCTMAX 100
+#define NOMEMAX 100
 
 
-// a variável counter nas estruturas abaixo será utilizada para contar
-// a quantidade de elementos introduzidos
+
+// A variável counter nas estruturas abaixo serve
+// para contar a quantidade de elementos introduzidos
 struct aparelhagem {
-    char nome[30];
+    char nome[NOMEMAX];
     float potencia;
     int quantidade;
-    int hrs_dia;
-    int dia_mes;
+    float hrs_dia;
+    unsigned int dia_mes;
     float consumo;
     int counter;
-}; // TODO: muda alguns tipos pa unsigned;
+};
 
 
 struct setores {
-    char nome[40];
+    char nome[NOMEMAX];
     struct aparelhagem aparelho[STRUCTMAX];
     float consumo;
     int counter;
@@ -69,13 +71,12 @@ int menu(void)
 
 
 void add_setor(struct setores setor[]) {
-    while (1)
-    {
-        char input[40];
-        printf("Escreva o nome de um setor(ou escreva -> terminar, para sair): ");
+    while (1) {
+        char input[NOMEMAX];
+        printf("Escreva o nome de um setor(ou escreva -> sair, para terminar): ");
         gets(input);
         setbuf(stdin, NULL);
-        if (strcmp(input, "terminar") != 0) {
+        if (strcmp(input, "sair") != 0) {
             strcpy(setor[setor->counter].nome, input);
             setor->counter++;
         } else break;
@@ -83,12 +84,15 @@ void add_setor(struct setores setor[]) {
 }
 
 
-void show_setores(struct setores setor[]) {
-    int i;
-    printf("Setores disponíveis:\n");
-    for(i = 0 ; i < setor->counter ; ++i)
-    printf("%d -> %s\t", i, setor[i].nome);
-    printf("\n");
+int show_setores_disponiveis(struct setores setor[]) {
+    if (setor->counter > 0) {
+        int i;
+        printf("Setores disponíveis:");
+        for(i = 0 ; i < setor->counter ; ++i)
+        printf("\n%d -> %s", i, setor[i].nome);
+        printf("\n");
+        return 1;
+    } else return 0;
 }
 
 
@@ -116,12 +120,14 @@ void add_aparelho(struct setores setor[], int index) {
 
     // transforma potência em kilowatts
     setor[index].aparelho[*count].potencia = potencia_watts * 0.001;
+    
     setor[index].aparelho[*count].hrs_dia = hrs_dia;
     setor[index].aparelho[*count].dia_mes = dia_mes;
     setor[index].aparelho[*count].quantidade = quantidade;
-    setor[index].aparelho[*count].consumo = consumo(setor[index].aparelho[*count].potencia,
-    hrs_dia, dia_mes, quantidade);
-    setor[index].consumo += setor[index].aparelho[*count].consumo;
+    
+    float consu = consumo(setor[index].aparelho[*count].potencia, hrs_dia, dia_mes, quantidade);
+    setor[index].aparelho[*count].consumo = consu;
+    setor[index].consumo += consu;
 
     (*count)++;
 }
