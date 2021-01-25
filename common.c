@@ -1,43 +1,43 @@
+/* * * * * * * * * docstrings * * * * * * * * * 
+* Este módulo esta a ser utilizado para guardar 
+* funções que serão utilizadas no modulo principal 
+* main.c
+*
+* No que se refere a explicações dos códicos,
+* a maioria encontra-se aqui abaixo, então,
+* só comentários realmente necessários serão
+* adicionados aos códicos. Também foram usados
+* nomes bastantes sugestivos o que facilita o
+* entendimento do processo.
+* 
+* Funções principais:
+* TODO: coloca funções principais ali
+* * * * * * * * * * * * * * * * * * * * * * * */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/*                    docstrings
- * Este módulo esta a ser utilizado para guardar 
- * funções que serão utilizadas no modulo principal 
- * main.c
- *
- * No que se refere a explicações dos códicos,
- * a maioria encontra-se aqui abaixo, pelo que,
- * só comentários realmente necessários serão
- * adicionados aos códicos. Também foram usados
- * nomes bastantes sugestivos o que facilita o
- * entendimento do processo.
- * 
- * Funções principais:
- * TODO: coloca funções principais ali
- * */
-
-// constantes pré-definidas pelo roteiro
+// constantes pré-definidas pelo roteiro do trabalho
 #define IVA 0.15
 #define TAXA_RTC 508
 #define IP_CONTRIB 100
 #define ALUGER 105
-// máx. de elementos do vetor de tipo estrutura, e string de nomes
+// máx. de elementos do vetor de tipo estrutura e strings de nomes,
+// pode ser alterado para aceitar mais valores
 #define STRUCTMAX 100
 #define NOMEMAX 100
 
 
-
-// A variável counter nas estruturas abaixo serve
-// para contar a quantidade de elementos introduzidos
 struct aparelhagem {
     char nome[NOMEMAX];
     float potencia;
     int quantidade;
     float hrs_dia;
     unsigned int dia_mes;
-    float consumo;
+    float consumo_eletrico;
+    float escudos_consumidos;
+    // conta elementos introduzidos
     int counter;
 };
 
@@ -45,21 +45,18 @@ struct aparelhagem {
 struct setores {
     char nome[NOMEMAX];
     struct aparelhagem aparelho[STRUCTMAX];
-    float consumo;
+    float consumo_eletrico;
+    float escudos_consumidos;
+    // conta elementos introduzidos
     int counter;
 };
 
 
-int menu(void)
-{
+int menu(void) {
     int opt;
     printf("\n ** Escolha uma das opções abaixo **\n");
-    /*
-    * printf(" 1 - Ler o Valor da Tarifa Residêncial de Baixa tensão cobrado pela ELECTRA;\n");
-    * printf(" 2 - Calcular o consumo de energia elétrica por setor da universidade;\n");
-    */
     printf("1 -> Adicionar Setores;\n");
-    printf("2 -> Adicionar aparelhos para setores\n");
+    printf("2 -> Adicionar aparelhos para setores;\n");
     printf("3 -> Terminar e Estatísticas;\n");
 
     printf("\nSua opção: ");
@@ -96,38 +93,68 @@ int show_setores_disponiveis(struct setores setor[]) {
 }
 
 
-float consumo(float potencia, float hrs_dia, int dia_mes, int quantidade){
+float consumo(float potencia, float hrs_dia, int dia_mes, int quantidade) {
     return ((hrs_dia * dia_mes) * potencia) * quantidade;
 }
 
 
 void add_aparelho(struct setores setor[], int index) {
-    int * count = &setor->aparelho->counter;
-    float potencia_watts, hrs_dia;
-    int dia_mes, quantidade;
+    int * count = &setor[index].aparelho->counter;
+    setbuf(stdin, NULL);
+    float watts, horas;
+    int dias, qtdade;
 
     printf("Nome do aparelho: ");
     gets(setor[index].aparelho[*count].nome);
     printf("Quantidade: ");
-    scanf("%d", &quantidade);
-    printf("Potências em watts do aparelho: ");
-    scanf("%f", &potencia_watts);
+    scanf("%d", &qtdade);
+    printf("Potência em watts do aparelho: ");
+    scanf("%f", &watts);
     printf("Horas de uso por dia: ");
-    scanf("%f", &hrs_dia);
-    printf("Uso em dias por mes: ");
-    scanf("%d", &dia_mes);
+    scanf("%f", &horas);
+    printf("Dias de uso por mes: ");
+    scanf("%d", &dias);
     setbuf(stdin, NULL);
 
-    // transforma potência em kilowatts
-    setor[index].aparelho[*count].potencia = potencia_watts * 0.001;
+    // transforma potência de watts para kilowatts
+    setor[index].aparelho[*count].potencia = watts * 0.001;
     
-    setor[index].aparelho[*count].hrs_dia = hrs_dia;
-    setor[index].aparelho[*count].dia_mes = dia_mes;
-    setor[index].aparelho[*count].quantidade = quantidade;
-    
-    float consu = consumo(setor[index].aparelho[*count].potencia, hrs_dia, dia_mes, quantidade);
-    setor[index].aparelho[*count].consumo = consu;
-    setor[index].consumo += consu;
+    setor[index].aparelho[*count].hrs_dia = horas;
+    setor[index].aparelho[*count].dia_mes = dias;
+    setor[index].aparelho[*count].quantidade = qtdade;
+
+    float consu = consumo(setor[index].aparelho[*count].potencia, horas, dias, qtdade);
+    setor[index].aparelho[*count].consumo_eletrico = consu;
+    setor[index].consumo_eletrico += consu;
 
     (*count)++;
+}
+
+
+float calcular_escudos_consumidos(struct setores setor[], float valor_unitario) {
+    float valor_total = 0;
+    int i, j;
+
+    for (i = 0 ; i < setor->counter ; ++i) {
+        for (j = 0 ; j < setor[i].aparelho->counter ; ++j) {
+            setor[i].aparelho[j].escudos_consumidos =  setor[i].aparelho[j].consumo_eletrico * valor_unitario;
+            setor[i].escudos_consumidos += setor[i].aparelho[j].escudos_consumidos;
+        }
+        valor_total += setor[i].escudos_consumidos;
+    }
+
+    return valor_total;
+}
+
+void show_dados_setor(struct setores setor[], int index){
+    int i;
+    printf("\n#### %s\n", setor[index].nome);
+    printf("  Nome do aparelho:\t\t\tEnergia Consumida:\n");
+    for(i = 0; i < setor[index].aparelho->counter ; ++i) {
+        printf("   * %s\t\t\t\t %.2fKwh\n", 
+        setor[index].aparelho[i].nome, setor[index].aparelho[i].consumo_eletrico);
+    }
+    printf("\n  Total Aparelhos: %d    |    Energia Total Consumida: %.2fKwh    |    Total Gasto: %.2fCVE\n", 
+        setor[index].aparelho->counter, setor[index].consumo_eletrico, setor[index].escudos_consumidos);
+    printf("#### Fim do setor %s\n", setor[index].nome);
 }
