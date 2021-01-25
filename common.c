@@ -10,12 +10,12 @@
 * Funções principais:                                                               *
 *   void cleanBuf() -> Limpar Buffer;                                               *
 *   int menu() -> Mostra o menu e retorna a opção escolhida;                        *
-*   void add_setor() -> adiciona um setor ao vetor de setorer;                      *
+*   void add_setor() -> adiciona um setor ao vetor de setores;                      *
 *   int show_setores_disponiveis() -> mostra setores caso diponíveis e retorna 1,   *
 *      caso não existam disponíveis retorna 0;                                      *
 *   float consumo() -> calcula o consumo e retorna o resultado;                     *
 *   void add_aparelho() -> adiciona um aparlho a um setor;                          *
-*   float calcular_escudos_consumidos() -> calcula o consumo emescudos;             *
+*   float calcular_escudos_consumidos() -> calcula o consumo em escudos;            *
 *   void show_dados_setor() -> mostra dados de cada setor                           *
 *                                                                                   *
 * Estruturas:                                                                       *
@@ -23,10 +23,11 @@
 *   struct setores -> "define" um setor                                             *
 *                                                                                   *
 *                                                                                   *
-* Programador: Anaxímeno Brito                                                      *
-* Recolha de dados e Roteiro: Vitor Sancha                                          *
+* Programador: Anaxímeno Brito, EIC 1º ano                                          *
+* Recolha de dados e Roteiro: Vitor Sancha, EIC 1º ano                              *
 * Licensa: Undefined TODO: Colocar licensa aqui                                     *
 *                                                                                   *
+* Cadeira: Introdução à Programação                                                 *
 * Docente: Artemisa Moreno                                                          *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 

@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * *docstrings* * * * * * * * * * * * * * *
-*       THOR - simulador de consumo de energia                    *
+*         THOR - simulador de consumo de energia | Version=2021.1 *
 *                                                                 *
 * O módulo common.c contém algumas funções, métodos e constantes  *
 * utilizadas nesse modulo, o principal.                           *
@@ -8,6 +8,7 @@
 * Recolha de dados e Roteiro: Vitor Sancha                        *
 * Licensa: Undefined TODO: Colocar licensa aqui                   *
 *                                                                 *
+* Cadeira: Introdução à Programação                               *
 * Docente: Artemisa Moreno                                        *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
