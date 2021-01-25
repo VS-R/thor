@@ -31,8 +31,8 @@ int main()
 			case 2:
 				if (show_setores_disponiveis(setor)) {
 					printf("\nNúmero do setor a adicionar aparelho: ");
-					scanf("%d", &index);
-					setbuf(stdin, NULL);
+					scanf(" %d", &index);
+					cleanBuf();
 
 					if (setor->counter > 0 && index >= 0 && index < setor->counter){	
 						do {
@@ -41,7 +41,7 @@ int main()
 
 							printf("\n* Quer adicionar outro aparelho ao setor %s? (1 - sim | 0 - não): ", setor[index].nome);
 							scanf("%d", &again);
-							setbuf(stdin, NULL);
+							cleanBuf();
 						} while(again);
 					} else
 						printf("\n* Setor inválido, escolha um dos setores disponíveis\n");
