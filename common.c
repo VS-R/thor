@@ -1,18 +1,34 @@
-/* * * * * * * * * docstrings * * * * * * * * * 
-* Este módulo esta a ser utilizado para guardar 
-* funções que serão utilizadas no modulo principal 
-* thor.c
-*
-* No que se refere a explicações dos códicos,
-* a maioria encontra-se aqui abaixo, então,
-* só comentários realmente necessários serão
-* adicionados aos códicos. Também foram usados
-* nomes bastantes sugestivos o que facilita o
-* entendimento do processo.
-* 
-* Funções principais:
-* TODO: coloca funções principais ali
-* * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * *docstrings* * * * * * * * * * * * * * * * * * * * 
+* Este módulo esta a ser utilizado para guardar funções que serão utilizadas        *
+* no modulo principal thor.c                                                        *
+*                                                                                   *
+* No que se refere a explicações dos códicos, a maioria encontra-se aqui em baixo,  *
+* então, só comentários realmente necessários serão adicionados aos códicos.        *
+* Também foram usados nomes bastantes sugestivos o que facilita o entendimento do   *
+* processo.                                                                         *
+*                                                                                   *
+* Funções principais:                                                               *
+*   void cleanBuf() -> Limpar Buffer;                                               *
+*   int menu() -> Mostra o menu e retorna a opção escolhida;                        *
+*   void add_setor() -> adiciona um setor ao vetor de setorer;                      *
+*   int show_setores_disponiveis() -> mostra setores caso diponíveis e retorna 1,   *
+*      caso não existam disponíveis retorna 0;                                      *
+*   float consumo() -> calcula o consumo e retorna o resultado;                     *
+*   void add_aparelho() -> adiciona um aparlho a um setor;                          *
+*   float calcular_escudos_consumidos() -> calcula o consumo emescudos;             *
+*   void show_dados_setor() -> mostra dados de cada setor                           *
+*                                                                                   *
+* Estruturas:                                                                       *
+*   struct aparelhagem -> "define" um aparelho                                      *
+*   struct setores -> "define" um setor                                             *
+*                                                                                   *
+*                                                                                   *
+* Programador: Anaxímeno Brito                                                      *
+* Recolha de dados e Roteiro: Vitor Sancha                                          *
+* Licensa: Undefined TODO: Colocar licensa aqui                                     *
+*                                                                                   *
+* Docente: Artemisa Moreno                                                          *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,10 +46,11 @@
 
 
 void cleanBuf(void)
-{ // limpar o buffer tanto para sistema UNIX quanto Windows
+{ // limpar o buffer tanto para UNIX based sytems quanto Windows systems
     setbuf(stdin, NULL);
     fflush(stdin);
 }
+
 
 struct aparelhagem {
     char nome[NOMEMAX];
@@ -43,7 +60,7 @@ struct aparelhagem {
     int dia_mes;
     float consumo_eletrico;
     float escudos_consumidos;
-    // conta elementos introduzidos
+    // conta # de elementos introduzidos
     int counter;
 };
 
@@ -53,7 +70,7 @@ struct setores {
     struct aparelhagem aparelho[STRUCTMAX];
     float consumo_eletrico;
     float escudos_consumidos;
-    // conta elementos introduzidos
+    // conta # de elementos introduzidos
     int counter;
 };
 
@@ -63,7 +80,7 @@ int menu(void) {
     printf("\n ** Escolha uma das opções abaixo **\n");
     printf("1 -> Adicionar Setores;\n");
     printf("2 -> Adicionar aparelhos para setores;\n");
-    printf("3 -> Terminar e Estatísticas;\n");
+    printf("3 -> Terminar e Estatísticas.\n");
 
     printf("\nSua opção: ");
     scanf("%d", &opt);

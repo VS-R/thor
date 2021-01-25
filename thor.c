@@ -1,7 +1,16 @@
-/*                    docstrings
-* O módulo common.c contém as funções que realizam a
-* maioria dos processos deste módulo.
-* */
+/* * * * * * * * * * * * * *docstrings* * * * * * * * * * * * * * *
+*       THOR - simulador de consumo de energia                    *
+*                                                                 *
+* O módulo common.c contém algumas funções, métodos e constantes  *
+* utilizadas nesse modulo, o principal.                           *
+*                                                                 *
+* Programador: Anaxímeno Brito                                    *
+* Recolha de dados e Roteiro: Vitor Sancha                        *
+* Licensa: Undefined TODO: Colocar licensa aqui                   *
+*                                                                 *
+* Docente: Artemisa Moreno                                        *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +21,10 @@
 
 int main()
 {
+	// define a estrutura setor com uma máx. de elemento STRUCTMAX,
+	// definido no módulo common.c
 	struct setores setor[STRUCTMAX];
+	// inicializa metodos do setor com seus respectivos valores iniciais
 	setor->counter = 0;
 	setor->consumo_eletrico = 0;
 	setor->escudos_consumidos = 0;
