@@ -1,7 +1,7 @@
 /* * * * * * * * * docstrings * * * * * * * * * 
 * Este módulo esta a ser utilizado para guardar 
 * funções que serão utilizadas no modulo principal 
-* main.c
+* thor.c
 *
 * No que se refere a explicações dos códicos,
 * a maioria encontra-se aqui abaixo, então,
@@ -29,12 +29,18 @@
 #define NOMEMAX 100
 
 
+void cleanBuf(void)
+{ // limpar o buffer tanto para sistema UNIX quanto Windows
+    setbuf(stdin, NULL);
+    fflush(stdin);
+}
+
 struct aparelhagem {
     char nome[NOMEMAX];
     float potencia;
     int quantidade;
     float hrs_dia;
-    unsigned int dia_mes;
+    int dia_mes;
     float consumo_eletrico;
     float escudos_consumidos;
     // conta elementos introduzidos
@@ -61,7 +67,7 @@ int menu(void) {
 
     printf("\nSua opção: ");
     scanf("%d", &opt);
-    setbuf(stdin, NULL);
+    cleanBuf();
     printf("\n");
     return opt;
 }
@@ -72,7 +78,7 @@ void add_setor(struct setores setor[]) {
         char input[NOMEMAX];
         printf("Escreva o nome de um setor(ou escreva -> sair, para terminar): ");
         gets(input);
-        setbuf(stdin, NULL);
+        cleanBuf();
         if (strcmp(input, "sair") != 0) {
             strcpy(setor[setor->counter].nome, input);
             setor->counter++;
@@ -100,25 +106,26 @@ float consumo(float potencia, float hrs_dia, int dia_mes, int quantidade) {
 
 void add_aparelho(struct setores setor[], int index) {
     int * count = &setor[index].aparelho->counter;
-    setbuf(stdin, NULL);
+    cleanBuf();
     float watts, horas;
     int dias, qtdade;
 
     printf("Nome do aparelho: ");
     gets(setor[index].aparelho[*count].nome);
+    cleanBuf();
     printf("Quantidade: ");
-    scanf("%d", &qtdade);
+    scanf(" %d", &qtdade);
     printf("Potência em watts do aparelho: ");
-    scanf("%f", &watts);
+    scanf(" %f", &watts);
     printf("Horas de uso por dia: ");
-    scanf("%f", &horas);
+    scanf(" %f", &horas);
     printf("Dias de uso por mes: ");
-    scanf("%d", &dias);
-    setbuf(stdin, NULL);
+    scanf(" %d", &dias);
+    cleanBuf();
 
     // transforma potência de watts para kilowatts
     setor[index].aparelho[*count].potencia = watts * 0.001;
-    
+
     setor[index].aparelho[*count].hrs_dia = horas;
     setor[index].aparelho[*count].dia_mes = dias;
     setor[index].aparelho[*count].quantidade = qtdade;
@@ -145,6 +152,7 @@ float calcular_escudos_consumidos(struct setores setor[], float valor_unitario) 
 
     return valor_total;
 }
+
 
 void show_dados_setor(struct setores setor[], int index){
     int i;
