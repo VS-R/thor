@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * *docstrings* * * * * * * * * * * * * * * * * * * * 
-* Este módulo esta a ser utilizado para guardar funções que serão utilizadas        *
+* Este modulo esta a ser utilizado para guardar funções que serao utilizadas        *
 * no modulo principal thor.c                                                        *
 *                                                                                   *
-* No que se refere a explicações dos códicos, a maioria encontra-se aqui em baixo,  *
-* então, só comentários realmente necessários serão adicionados aos códicos.        *
-* Também foram usados nomes bastantes sugestivos o que facilita o entendimento do   *
+* No que se refere a explicacoes dos codicos, a maioria encontra-se aqui em baixo,  *
+* entao, so comentários realmente necessários serao adicionados aos codicos.        *
+* Tambem foram usados nomes bastantes sugestivos o que facilita o entendimento do   *
 * processo.                                                                         *
 *                                                                                   *
 * Funções principais:                                                               *
@@ -50,13 +50,17 @@
 #define False 0
 
 
+// var global para guardar o total de comsumo eletrico
+float gConsumo_eletrico_total = 0;
+
+
 // Tenta limpar o buffer
 void cleanBuf(void) { 
 
     setbuf(stdin, NULL);
     fflush(stdin);
 
-}
+} 
 
 
 // typedef foi usado para criar um tipo simbólico
@@ -196,7 +200,7 @@ void add_aparelho(SETOR ArraySetor[], int index) {
     
     aparelho->consumo = consu;
     setor->consumo += consu;
-
+    gConsumo_eletrico_total += consu;
     (*count)++;
 }
 
@@ -205,15 +209,15 @@ float calcular_cve_gasto(SETOR ArraySetor[], float valor_unitario) {
 
     float valor_total = 0;
     int i, j;
-    // printf("ARRAYSETOR counter: %d | aparelho counter: %d\n"); // For tests
-    for (i = 0 ; i < ArraySetor->counter ; i++) {
-		
-        for (j = 0 ; j < ArraySetor->aparelho->counter ; j++) {
+    APARELHO *aparelho;
 
-			printf("\nNome: %s | Consumo: %f\n", ArraySetor[i].aparelho[i].nome, 
-				   ArraySetor[i].aparelho[i].consumo); // For tests 
-            ArraySetor[i].aparelho[i].cve_gasto =  ArraySetor[i].aparelho[i].consumo * valor_unitario;
-            ArraySetor[i].cve_gasto += ArraySetor[i].aparelho[i].cve_gasto;
+    for (i = 0 ; i < (ArraySetor->counter) ; i++) {
+		
+        for (j = 0 ; j < (ArraySetor[i].aparelho->counter) ; j++) {
+            aparelho = &ArraySetor[i].aparelho[j];
+
+            aparelho->cve_gasto =  aparelho->consumo * valor_unitario;
+            ArraySetor[i].cve_gasto += aparelho->cve_gasto;
         
         } valor_total += ArraySetor[i].cve_gasto;
 
@@ -232,8 +236,8 @@ void show_dados_setor(SETOR ArraySetor[], int index) {
 
     for(i = 0; i < setor->aparelho->counter ; i++) {
 
-        printf("   * %s\t\t\t\t %.2fKwh\n", setor->aparelho[i].nome, 
-            setor->aparelho[i].consumo);
+        printf("   * %s\t\t\t\t %.2fKwh\n", 
+            setor->aparelho[i].nome, setor->aparelho[i].consumo);
 
     }
 
