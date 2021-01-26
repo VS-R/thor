@@ -1,18 +1,18 @@
 /* * * * * * * * * * * * * * * * * *docstrings* * * * * * * * * * * * * * * * * * * * 
-* Este modulo esta a ser utilizado para guardar funções que serao utilizadas        *
+* Este modulo esta a ser utilizado para guardar funcoes que serao utilizadas        *
 * no modulo principal thor.c                                                        *
 *                                                                                   *
 * No que se refere a explicacoes dos codicos, a maioria encontra-se aqui em baixo,  *
-* entao, so comentários realmente necessários serao adicionados aos codicos.        *
+* entao, so comentarios realmente necessarios serao adicionados aos codigos.        *
 * Tambem foram usados nomes bastantes sugestivos o que facilita o entendimento do   *
 * processo.                                                                         *
 *                                                                                   *
-* Funções principais:                                                               *
+* Funcoeses principais:                                                             *
 *   void cleanBuf() -> Limpar Buffer;                                               *
-*   int menu() -> Mostra o menu e retorna a opção escolhida;                        *
+*   int menu() -> Mostra o menu e retorna a opcao escolhida;                        *
 *   void add_setor() -> adiciona um setor ao vetor de setores;                      *
-*   int show_setores_disponiveis() -> mostra setores caso diponíveis e retorna 1,   *
-*      caso não existam disponíveis retorna 0;                                      *
+*   int show_setores_disponiveis() -> mostra setores caso diponiveis e retorna 1,   *
+*      caso nao existam disponiveis retorna 0;                                      *
 *   float consumo() -> calcula o consumo e retorna o resultado;                     *
 *   void add_aparelho() -> adiciona um aparlho a um setor;                          *
 *   float calcular_cve_gasto() -> calcula e retorna o consumo em escudos;           *
@@ -24,11 +24,11 @@
 *   struct setores   -> "define" um setor                                           *
 *                                                                                   *
 *                                                                                   *
-* Programador: Anaxímeno Brito, EIC 1º ano                                          *
-* System Design e Roteiro: Vitor Sancha, EIC 1º ano                                 *
+* Programador: Anaximeno Brito, EIC Primeiro ano                                    *
+* System Design e Documentacao: Victor Sancha, EIC Primeiro ano                     *
 * Licensa: MIT License                                                              *
 *                                                                                   *
-* Cadeira: Introdução à Programação                                                 *
+* Cadeira: Introducao A  Programacao                                                *
 * Docente: Artemisa Moreno                                                          *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -36,12 +36,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-// constantes pré-definidas pelo roteiro do trabalho
+// constantes pre-definidas pelo roteiro do trabalho
 #define IVA 0.15
 #define TAXA_RTC 508
 #define IP_CONTRIB 100
 #define ALUGER 105
-// máx. de elementos do vetor de tipo estrutura e strings de nomes,
+// max. de elementos do vetor de tipo estrutura e strings de nomes,
 // pode ser alterado para aceitar mais valores
 #define STRUCTMAX 100
 #define NOMEMAX 100
@@ -63,7 +63,7 @@ void cleanBuf(void) {
 } 
 
 
-// typedef foi usado para criar um tipo simbólico
+// typedef foi usado para criar um tipo simbolico
 // para representar as estruturas abaixo.
 typedef struct aparelhos {
 
@@ -96,12 +96,12 @@ int menu(void) {
 
     int opt;
 
-    printf("\n ** Escolha uma das opções abaixo **\n");
+    printf("\n ** Escolha uma das opcoes abaixo **\n");
     printf("1 -> Adicionar Setores;\n");
     printf("2 -> Adicionar aparelhos para setores;\n");
-    printf("3 -> Terminar e Estatísticas.\n");
+    printf("3 -> Terminar e Estatisticas.\n");
 
-    printf("\nSua opção: ");
+    printf("\nSua opcao: ");
     scanf("%d", &opt);
     cleanBuf();
 
@@ -140,7 +140,7 @@ int show_setores_disponiveis(SETOR ArraySetor[]) {
 
         int i;
 
-        printf("Setores disponíveis:");
+        printf("Setores disponiveis:");
 
         for(i = 0 ; i < ArraySetor->counter ; i++)
             printf("\n%d -> %s", i, ArraySetor[i].nome);
@@ -179,7 +179,7 @@ void add_aparelho(SETOR ArraySetor[], int index) {
     printf("Quantidade: ");
     scanf(" %d", &qtdade);
 
-    printf("Potência em watts do aparelho: ");
+    printf("Potencia em watts do aparelho: ");
     scanf(" %f", &watts);
 
     printf("Horas de uso por dia: ");
@@ -189,7 +189,7 @@ void add_aparelho(SETOR ArraySetor[], int index) {
     scanf(" %d", &dias);
     cleanBuf();
 
-    // transforma potência de watts para kilowatts
+    // transforma potencia de watts para kilowatts
     aparelho->potencia = watts * 0.001;
 
     aparelho->hrs_dia = horas;

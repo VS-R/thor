@@ -1,14 +1,14 @@
 /* * * * * * * * * * * * * *docstrings* * * * * * * * * * * * * * *
-*     THOR - simulador de consumo de energia | Versão 2021.1      *
+*     THOR - simulador de consumo de energia | Versao 2021.1      *
 *                                                                 *
-* O módulo common.c contém algumas funções, métodos e constantes  *
+* O modulo common.c contem algumas funcoes, metodos e constantes  *
 * utilizadas nesse modulo, o principal.                           *
 *                                                                 *
-* Programador: Anaxímeno Brito, EIC 1º Ano                        *
-* System Design e Roteiro: Vitor Sancha, EIC 1º Ano               *
+* Programador: Anaximeno Brito, EIC Primeiro Ano                  *
+* System Design e Documentacao: Victor Sancha, EIC Primeiro Ano   *
 * Licensa: MIT License                                            *
 *                                                                 *
-* Cadeira: Introdução à Programação                               *
+* Cadeira: Introducao A  Programacao                              *
 * Docente: Artemisa Moreno                                        *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -22,8 +22,8 @@
 
 int main()
 {
-	// define a estrutura setor com um máx. de elemento STRUCTMAX,
-	// definido no módulo common.c
+	// define a estrutura setor com um max. de elemento STRUCTMAX,
+	// definido no modulo common.c
 	SETOR ArraySetor[STRUCTMAX];
 
 	// inicializa os campos do setor com seus respectivos valores iniciais
@@ -53,7 +53,7 @@ int main()
 
 				if (show_setores_disponiveis(ArraySetor)) {
 
-					printf("\nNúmero do setor a adicionar aparelho: ");
+					printf("\nNumero do setor a adicionar aparelho: ");
 					scanf(" %d", &index);
 					cleanBuf();
 
@@ -66,7 +66,7 @@ int main()
 
 							add_aparelho(ArraySetor, index);
 
-							printf("\n* Quer adicionar outro aparelho ao setor %s? [1 - sim | 0 - não]: ", 
+							printf("\n* Quer adicionar outro aparelho ao setor %s? [1 - sim | 0 - nao]: ", 
 							    ArraySetor[index].nome);
 							scanf("%d", &again);
 							cleanBuf();
@@ -74,16 +74,16 @@ int main()
 						} while(again);
 
 					} else
-						printf("\n* Setor inválido, escolha um dos setores disponíveis\n");
+						printf("\n* Setor invalido, escolha um dos setores disponiveis\n");
 
 				} else
-					printf("Nenhum setor disponível! Adiciona setores na opção 1 e depois volta para cá.\n");
+					printf("Nenhum setor disponivel! Adiciona setores na opcao 1 e depois volta para ca.\n");
 				
 				break;
 
 			case 3:
 			
-				printf("Escreva o atual valor unitário da Tarifa Residêncial de Baixa Tensão: ");
+				printf("Escreva o atual valor unitario da Tarifa Residencial de Baixa Tensao: ");
 				scanf("%f", &unit_val);
 
 				cve_gasto = calcular_cve_gasto(ArraySetor, unit_val);
@@ -96,7 +96,7 @@ int main()
 				putchar('\n');
 				printf("Total a Pagar:\n");
 				printf("    -> Energia Consumida: %.2fKwh\n", gConsumo_eletrico_total);
-				printf("    -> Valor Unitário:    *%.2f\n", unit_val);
+				printf("    -> Valor Unitario:    *%.2f\n", unit_val);
 				printf("    -> Gasto em escudos:  %.2fCVE\n", cve_gasto);
 				printf("    -> IP_CONTRIB:        +%3dCVE\n", IP_CONTRIB);
 				printf("    -> TAXA_RTC:          +%3dCVE\n", TAXA_RTC);
@@ -110,7 +110,7 @@ int main()
 
 			default:
 
-				printf("\n* Opção desconhecida!\n");
+				printf("\n* Opcao desconhecida!\n");
 
 		}
 
