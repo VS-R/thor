@@ -24,15 +24,15 @@ int main()
 {
 	// define a estrutura setor com um máx. de elemento STRUCTMAX,
 	// definido no módulo common.c
-	SETOR setor[STRUCTMAX];
+	SETOR ArraySetor[STRUCTMAX];
 
 	// inicializa os campos do setor com seus respectivos valores iniciais
-	setor->counter = 0;
-	setor->consumo = 0;
-	setor->cve_gasto = 0;
-	setor->aparelho->counter = 0;
-	setor->aparelho->cve_gasto = 0;
-	setor->aparelho->consumo = 0;
+	ArraySetor->counter = 0;
+	ArraySetor->consumo = 0;
+	ArraySetor->cve_gasto = 0;
+	ArraySetor->aparelho->counter = 0;
+	ArraySetor->aparelho->cve_gasto = 0;
+	ArraySetor->aparelho->consumo = 0;
 
 	int index, again, i;
 	float unit_val, cve_gasto, val_taxado, total_a_pagar;
@@ -46,28 +46,28 @@ int main()
 		{
 
 			case 1:
-				add_setor(setor);
+				add_setor(ArraySetor);
 				break;
 
 			case 2:
 
-				if (show_setores_disponiveis(setor)) {
+				if (show_setores_disponiveis(ArraySetor)) {
 
 					printf("\nNúmero do setor a adicionar aparelho: ");
 					scanf(" %d", &index);
 					cleanBuf();
 
-					if (setor->counter > 0 && index >= 0 && index < setor->counter) {	
+					if (ArraySetor->counter > 0 && index >= 0 && index < ArraySetor->counter) {	
 
 						do 
 						{
 
-							printf("\n\t* %s *\n", setor[index].nome);
+							printf("\n\t* %s *\n", ArraySetor[index].nome);
 
-							add_aparelho(setor, index);
+							add_aparelho(ArraySetor, index);
 
 							printf("\n* Quer adicionar outro aparelho ao setor %s? [1 - sim | 0 - não]: ", 
-							    setor[index].nome);
+							    ArraySetor[index].nome);
 							scanf("%d", &again);
 							cleanBuf();
 
@@ -86,16 +86,16 @@ int main()
 				printf("Escreva o atual valor unitário da Tarifa Residêncial de Baixa Tensão: ");
 				scanf("%f", &unit_val);
 
-				cve_gasto = calcular_cve_gasto(setor, unit_val);
+				cve_gasto = calcular_cve_gasto(ArraySetor, unit_val);
 				val_taxado = cve_gasto + TAXA_RTC + IP_CONTRIB + ALUGER;
 				total_a_pagar =  val_taxado + (val_taxado * IVA);
 
-				for(i = 0 ; i < setor->counter ; i++)
-					show_dados_setor(setor, i);
+				for(i = 0 ; i < ArraySetor->counter ; i++)
+					show_dados_setor(ArraySetor, i);
 
 				putchar('\n');
 				printf("Total a Pagar:\n");
-				printf("    -> Energia Consumida: %.2fKwh\n", setor->consumo);
+				printf("    -> Energia Consumida: %.2fKwh\n", gConsumo_eletrico_total);
 				printf("    -> Valor Unitário:    *%.2f\n", unit_val);
 				printf("    -> Gasto em escudos:  %.2fCVE\n", cve_gasto);
 				printf("    -> IP_CONTRIB:        +%3dCVE\n", IP_CONTRIB);
