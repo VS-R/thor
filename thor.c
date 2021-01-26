@@ -1,12 +1,12 @@
 /* * * * * * * * * * * * * *docstrings* * * * * * * * * * * * * * *
-*         THOR - simulador de consumo de energia | Version=2021.1 *
+*     THOR - simulador de consumo de energia | Versão 2021.1      *
 *                                                                 *
 * O módulo common.c contém algumas funções, métodos e constantes  *
 * utilizadas nesse modulo, o principal.                           *
 *                                                                 *
-* Programador: Anaxímeno Brito                                    *
-* Recolha de dados e Roteiro: Vitor Sancha                        *
-* Licensa: Undefined TODO: Colocar licensa aqui                   *
+* Programador: Anaxímeno Brito, EIC 1º Ano                        *
+* System Design e Roteiro: Vitor Sancha, EIC 1º Ano               *
+* Licensa: MIT License                                            *
 *                                                                 *
 * Cadeira: Introdução à Programação                               *
 * Docente: Artemisa Moreno                                        *
@@ -24,7 +24,7 @@ int main()
 {
 	// define a estrutura setor com uma máx. de elemento STRUCTMAX,
 	// definido no módulo common.c
-	struct setores setor[STRUCTMAX];
+	SETOR setor[STRUCTMAX];
 	// inicializa metodos do setor com seus respectivos valores iniciais
 	setor->counter = 0;
 	setor->consumo_eletrico = 0;
@@ -36,8 +36,10 @@ int main()
 	float valor_unitario, escudos_consumidos, consumo_e_taxas, total_a_pagar;
 
 	printf("\n# SEJA BEMVINDO(A) ao Simulador de Consumo de Energia: TH0R\n");
-	while(1){
-		switch(menu()) {
+	while (TRUE) 
+	{
+		switch (menu()) 
+		{
 			case 1:
 				add_setor(setor);
 				break;
@@ -48,11 +50,12 @@ int main()
 					cleanBuf();
 
 					if (setor->counter > 0 && index >= 0 && index < setor->counter){	
-						do {
+						do 
+						{
 							printf("\n\t* %s *\n", setor[index].nome);
 							add_aparelho(setor, index);
 
-							printf("\n* Quer adicionar outro aparelho ao setor %s? (1 - sim | 0 - não): ", setor[index].nome);
+							printf("\n* Quer adicionar outro aparelho ao setor %s? [1 - sim | 0 - não]: ", setor[index].nome);
 							scanf("%d", &again);
 							cleanBuf();
 						} while(again);
@@ -63,7 +66,7 @@ int main()
 					printf("Nenhum setor disponível! Adiciona setores na opção 1 e depois volta para cá.\n");
 				break;
 			case 3:
-				printf("Escreva o valor unitário atual da Tarifa Residêncial de Baixa Tensão: ");
+				printf("Escreva o atual valor unitário da Tarifa Residêncial de Baixa Tensão: ");
 				scanf("%f", &valor_unitario);
 
 				escudos_consumidos = calcular_escudos_consumidos(setor, valor_unitario);
@@ -73,6 +76,8 @@ int main()
 				for(i = 0 ; i < setor->counter ; ++i)
 					show_dados_setor(setor, i);
 
+				// TODO: Melhorar essa coisa aquí
+				//printf("")
 				printf("\n** O valor total de escudos a pagar é %.2fCVE\n", total_a_pagar);
 				exit(0);
 				break;

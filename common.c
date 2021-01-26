@@ -15,17 +15,18 @@
 *      caso não existam disponíveis retorna 0;                                      *
 *   float consumo() -> calcula o consumo e retorna o resultado;                     *
 *   void add_aparelho() -> adiciona um aparlho a um setor;                          *
-*   float calcular_escudos_consumidos() -> calcula o consumo em escudos;            *
-*   void show_dados_setor() -> mostra dados de cada setor                           *
+*   float calcular_escudos_consumidos() -> calcula e retorna o consumo em escudos;  *
+*   void show_dados_setor() -> mostra dados de cada setor;                          *
+*   void analisar_dados() -> Analisa se todos os dados foram colocados;             *                                                      *
 *                                                                                   *
 * Estruturas:                                                                       *
-*   struct aparelhagem -> "define" um aparelho                                      *
+*   struct aparelhos -> "define" um aparelho                                        *
 *   struct setores -> "define" um setor                                             *
 *                                                                                   *
 *                                                                                   *
 * Programador: Anaxímeno Brito, EIC 1º ano                                          *
-* Recolha de dados e Roteiro: Vitor Sancha, EIC 1º ano                              *
-* Licensa: Undefined TODO: Colocar licensa aqui                                     *
+* System Design e Roteiro: Vitor Sancha, EIC 1º ano                                 *
+* Licensa: MIT License                                                              *
 *                                                                                   *
 * Cadeira: Introdução à Programação                                                 *
 * Docente: Artemisa Moreno                                                          *
@@ -45,15 +46,20 @@
 #define STRUCTMAX 100
 #define NOMEMAX 100
 
+#define TRUE 1
+#define False 0
 
-void cleanBuf(void)
-{ // limpar o buffer tanto para UNIX based sytems quanto Windows systems
+
+// Tenta limpar o buffer
+void cleanBuf(void) { 
     setbuf(stdin, NULL);
     fflush(stdin);
 }
 
 
-struct aparelhagem {
+// typedef foi usado para criar um tipo simbólico
+// para representar as estruturas abaixo.
+typedef struct aparelhos {
     char nome[NOMEMAX];
     float potencia;
     int quantidade;
@@ -63,17 +69,17 @@ struct aparelhagem {
     float escudos_consumidos;
     // conta # de elementos introduzidos
     int counter;
-};
+} APARELHO;
 
 
-struct setores {
+typedef struct setores {
     char nome[NOMEMAX];
-    struct aparelhagem aparelho[STRUCTMAX];
+    APARELHO aparelho[STRUCTMAX];
     float consumo_eletrico;
     float escudos_consumidos;
     // conta # de elementos introduzidos
     int counter;
-};
+} SETOR;
 
 
 int menu(void) {
@@ -91,8 +97,9 @@ int menu(void) {
 }
 
 
-void add_setor(struct setores setor[]) {
-    while (1) {
+void add_setor(SETOR setor[]) {
+    while (TRUE) 
+    {
         char input[NOMEMAX];
         printf("Escreva o nome de um setor(ou escreva -> sair, para terminar): ");
         gets(input);
@@ -105,7 +112,7 @@ void add_setor(struct setores setor[]) {
 }
 
 
-int show_setores_disponiveis(struct setores setor[]) {
+int show_setores_disponiveis(SETOR setor[]) {
     if (setor->counter > 0) {
         int i;
         printf("Setores disponíveis:");
@@ -122,7 +129,7 @@ float consumo(float potencia, float hrs_dia, int dia_mes, int quantidade) {
 }
 
 
-void add_aparelho(struct setores setor[], int index) {
+void add_aparelho(SETOR setor[], int index) {
     int * count = &setor[index].aparelho->counter;
     cleanBuf();
     float watts, horas;
@@ -149,14 +156,15 @@ void add_aparelho(struct setores setor[], int index) {
     setor[index].aparelho[*count].quantidade = qtdade;
 
     float consu = consumo(setor[index].aparelho[*count].potencia, horas, dias, qtdade);
+    
     setor[index].aparelho[*count].consumo_eletrico = consu;
     setor[index].consumo_eletrico += consu;
 
-    (*count)++;
+    ++(*count);
 }
 
 
-float calcular_escudos_consumidos(struct setores setor[], float valor_unitario) {
+float calcular_escudos_consumidos(SETOR setor[], float valor_unitario) {
     float valor_total = 0;
     int i, j;
 
@@ -164,15 +172,12 @@ float calcular_escudos_consumidos(struct setores setor[], float valor_unitario) 
         for (j = 0 ; j < setor[i].aparelho->counter ; ++j) {
             setor[i].aparelho[j].escudos_consumidos =  setor[i].aparelho[j].consumo_eletrico * valor_unitario;
             setor[i].escudos_consumidos += setor[i].aparelho[j].escudos_consumidos;
-        }
-        valor_total += setor[i].escudos_consumidos;
-    }
-
-    return valor_total;
+        } valor_total += setor[i].escudos_consumidos;
+    } return valor_total;
 }
 
 
-void show_dados_setor(struct setores setor[], int index){
+void show_dados_setor(SETOR setor[], int index){
     int i;
     printf("\n#### %s\n", setor[index].nome);
     printf("  Nome do aparelho:\t\t\tEnergia Consumida:\n");
@@ -184,3 +189,25 @@ void show_dados_setor(struct setores setor[], int index){
         setor[index].aparelho->counter, setor[index].consumo_eletrico, setor[index].escudos_consumidos);
     printf("#### Fim do setor %s\n", setor[index].nome);
 }
+
+/* IN DECISION
+int analisar_dados(SETOR setor[]) {
+	int opt = 0, i, j;
+	if (setor->counter == 0) {
+		printf("Nenhum setor foi introduzido, logo não será apresentado nenhum dado!\n");
+		printf("Sair mesmo assim? [1 - sim | 0 - não]: ");
+		scanf("%d", &opt);
+		cleanBuf();
+		if(opt) exit(0);
+	} else {
+		for(i = 0 ; i < setor->counter ; ++i)
+			if (setor[i].aparelho->counter == 0) {
+				printf("Nenhum aparelho foi introduzido ao setor %s!\n", setor[i].nome);
+				printf("Sair mesmo assim? [1 - sim | 0 - não]: ");
+				scanf("%d", &opt);
+				cleanBuf();
+				if (opt) exit(0);
+			}
+	}
+	return 1;
+}*/
