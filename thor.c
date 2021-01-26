@@ -22,16 +22,8 @@
 
 int main()
 {
-<<<<<<< HEAD
-
-	/* *
-	 * define a estrutura setor com uma máx. de elemento STRUCTMAX,
-	 * definido no módulo common.c
-	 * */
-=======
 	// define a estrutura setor com um máx. de elemento STRUCTMAX,
 	// definido no módulo common.c
->>>>>>> ea0b4ab5455d3cd1037d0c2dc7d144364df4143f
 	SETOR setor[STRUCTMAX];
 
 	// inicializa os campos do setor com seus respectivos valores iniciais
