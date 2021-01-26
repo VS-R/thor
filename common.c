@@ -15,13 +15,13 @@
 *      caso não existam disponíveis retorna 0;                                      *
 *   float consumo() -> calcula o consumo e retorna o resultado;                     *
 *   void add_aparelho() -> adiciona um aparlho a um setor;                          *
-*   float calcular_escudos_consumidos() -> calcula e retorna o consumo em escudos;  *
+*   float calcular_cve_gasto() -> calcula e retorna o consumo em escudos;  *
 *   void show_dados_setor() -> mostra dados de cada setor;                          *
 *   void analisar_dados() -> Analisa se todos os dados foram colocados;             *                                                      *
 *                                                                                   *
 * Estruturas:                                                                       *
 *   struct aparelhos -> "define" um aparelho                                        *
-*   struct setores -> "define" um setor                                             *
+*   struct setores   -> "define" um setor                                           *
 *                                                                                   *
 *                                                                                   *
 * Programador: Anaxímeno Brito, EIC 1º ano                                          *
@@ -52,38 +52,46 @@
 
 // Tenta limpar o buffer
 void cleanBuf(void) { 
+
     setbuf(stdin, NULL);
     fflush(stdin);
+
 }
 
 
 // typedef foi usado para criar um tipo simbólico
 // para representar as estruturas abaixo.
 typedef struct aparelhos {
+
     char nome[NOMEMAX];
     float potencia;
     int quantidade;
     float hrs_dia;
     int dia_mes;
-    float consumo_eletrico;
-    float escudos_consumidos;
+    float consumo;
+    float cve_gasto;
     // conta # de elementos introduzidos
     int counter;
+
 } APARELHO;
 
 
 typedef struct setores {
+
     char nome[NOMEMAX];
     APARELHO aparelho[STRUCTMAX];
-    float consumo_eletrico;
-    float escudos_consumidos;
+    float consumo;
+    float cve_gasto;
     // conta # de elementos introduzidos
     int counter;
+
 } SETOR;
 
 
 int menu(void) {
+
     int opt;
+
     printf("\n ** Escolha uma das opções abaixo **\n");
     printf("1 -> Adicionar Setores;\n");
     printf("2 -> Adicionar aparelhos para setores;\n");
@@ -92,122 +100,145 @@ int menu(void) {
     printf("\nSua opção: ");
     scanf("%d", &opt);
     cleanBuf();
-    printf("\n");
+
+    putchar('\n');
+    
     return opt;
+
 }
 
 
-void add_setor(SETOR setor[]) {
+void add_setor(SETOR ArraySetor[]) {
+
     while (TRUE) 
     {
         char input[NOMEMAX];
+
         printf("Escreva o nome de um setor(ou escreva -> sair, para terminar): ");
         gets(input);
         cleanBuf();
+
         if (strcmp(input, "sair") != 0) {
-            strcpy(setor[setor->counter].nome, input);
-            setor->counter++;
+
+            strcpy(ArraySetor[ArraySetor->counter].nome, input);
+            ArraySetor->counter++;
+
         } else break;
+
     }
+
 }
 
 
-int show_setores_disponiveis(SETOR setor[]) {
-    if (setor->counter > 0) {
+int show_setores_disponiveis(SETOR ArraySetor[]) {
+
+    if (ArraySetor->counter > 0) {
+
         int i;
+
         printf("Setores disponíveis:");
-        for(i = 0 ; i < setor->counter ; ++i)
-        printf("\n%d -> %s", i, setor[i].nome);
-        printf("\n");
+
+        for(i = 0 ; i < ArraySetor->counter ; i++)
+            printf("\n%d -> %s", i, ArraySetor[i].nome);
+
+        putchar('\n');
+
         return 1;
+
     } else return 0;
+
 }
 
 
 float consumo(float potencia, float hrs_dia, int dia_mes, int quantidade) {
+
     return ((hrs_dia * dia_mes) * potencia) * quantidade;
+
 }
 
 
-void add_aparelho(SETOR setor[], int index) {
-    int * count = &setor[index].aparelho->counter;
+void add_aparelho(SETOR ArraySetor[], int index) {
+
+    SETOR *setor = &ArraySetor[index];
+    int *count = &setor->aparelho->counter;
+    APARELHO *aparelho = &setor->aparelho[*count];
+
     cleanBuf();
+
     float watts, horas;
     int dias, qtdade;
 
     printf("Nome do aparelho: ");
-    gets(setor[index].aparelho[*count].nome);
+    gets(aparelho->nome);
     cleanBuf();
+
     printf("Quantidade: ");
     scanf(" %d", &qtdade);
+
     printf("Potência em watts do aparelho: ");
     scanf(" %f", &watts);
+
     printf("Horas de uso por dia: ");
     scanf(" %f", &horas);
+
     printf("Dias de uso por mes: ");
     scanf(" %d", &dias);
     cleanBuf();
 
     // transforma potência de watts para kilowatts
-    setor[index].aparelho[*count].potencia = watts * 0.001;
+    aparelho->potencia = watts * 0.001;
 
-    setor[index].aparelho[*count].hrs_dia = horas;
-    setor[index].aparelho[*count].dia_mes = dias;
-    setor[index].aparelho[*count].quantidade = qtdade;
+    aparelho->hrs_dia = horas;
+    aparelho->dia_mes = dias;
+    aparelho->quantidade = qtdade;
 
-    float consu = consumo(setor[index].aparelho[*count].potencia, horas, dias, qtdade);
+    float consu = consumo(aparelho->potencia, horas, dias, qtdade);
     
-    setor[index].aparelho[*count].consumo_eletrico = consu;
-    setor[index].consumo_eletrico += consu;
+    aparelho->consumo = consu;
+    setor->consumo += consu;
 
-    ++(*count);
+    (*count)++;
 }
 
 
-float calcular_escudos_consumidos(SETOR setor[], float valor_unitario) {
+float calcular_cve_gasto(SETOR ArraySetor[], float valor_unitario) {
+
     float valor_total = 0;
     int i, j;
+    printf("ARRAYSETOR counter: %d | aparelho counter: %d\n"); // For tests
+    for (i = 0 ; i < ArraySetor->counter ; i++) {
+		
+        for (j = 0 ; j < ArraySetor->aparelho->counter ; j++) {
 
-    for (i = 0 ; i < setor->counter ; ++i) {
-        for (j = 0 ; j < setor[i].aparelho->counter ; ++j) {
-            setor[i].aparelho[j].escudos_consumidos =  setor[i].aparelho[j].consumo_eletrico * valor_unitario;
-            setor[i].escudos_consumidos += setor[i].aparelho[j].escudos_consumidos;
-        } valor_total += setor[i].escudos_consumidos;
+			printf("\nNome: %s | Consumo: %f\n", ArraySetor[i].aparelho[i].nome, 
+				   ArraySetor[i].aparelho[i].consumo); // For tests 
+            ArraySetor[i].aparelho[i].cve_gasto =  ArraySetor[i].aparelho[i].consumo * valor_unitario;
+            ArraySetor[i].cve_gasto += ArraySetor[i].aparelho[i].cve_gasto;
+        
+        } valor_total += ArraySetor[i].cve_gasto;
+
     } return valor_total;
+
 }
 
 
-void show_dados_setor(SETOR setor[], int index){
+void show_dados_setor(SETOR ArraySetor[], int index) {
+
+    SETOR *setor = &ArraySetor[index];
     int i;
-    printf("\n#### %s\n", setor[index].nome);
-    printf("  Nome do aparelho:\t\t\tEnergia Consumida:\n");
-    for(i = 0; i < setor[index].aparelho->counter ; ++i) {
-        printf("   * %s\t\t\t\t %.2fKwh\n", 
-        setor[index].aparelho[i].nome, setor[index].aparelho[i].consumo_eletrico);
-    }
-    printf("\n  Total Aparelhos: %d    |    Energia Total Consumida: %.2fKwh    |    Total Gasto: %.2fCVE\n", 
-        setor[index].aparelho->counter, setor[index].consumo_eletrico, setor[index].escudos_consumidos);
-    printf("#### Fim do setor %s\n", setor[index].nome);
-}
 
-/* IN DECISION
-int analisar_dados(SETOR setor[]) {
-	int opt = 0, i, j;
-	if (setor->counter == 0) {
-		printf("Nenhum setor foi introduzido, logo não será apresentado nenhum dado!\n");
-		printf("Sair mesmo assim? [1 - sim | 0 - não]: ");
-		scanf("%d", &opt);
-		cleanBuf();
-		if(opt) exit(0);
-	} else {
-		for(i = 0 ; i < setor->counter ; ++i)
-			if (setor[i].aparelho->counter == 0) {
-				printf("Nenhum aparelho foi introduzido ao setor %s!\n", setor[i].nome);
-				printf("Sair mesmo assim? [1 - sim | 0 - não]: ");
-				scanf("%d", &opt);
-				cleanBuf();
-				if (opt) exit(0);
-			}
-	}
-	return 1;
-}*/
+    printf("\n#### %s\n", setor->nome);
+    printf("  Nome do aparelho:\t\t\tEnergia Consumida:\n");
+
+    for(i = 0; i < setor->aparelho->counter ; i++) {
+
+        printf("   * %s\t\t\t\t %.2fKwh\n", setor->aparelho[i].nome, 
+            setor->aparelho[i].consumo);
+
+    }
+
+    printf("\n  Total Aparelhos: %d    |    Energia Total Consumida: %.2fKwh    |    Total Gasto: %.2fCVE\n", 
+        setor->aparelho->counter, setor->consumo, setor->cve_gasto);
+    printf("#### Fim do setor %s\n", setor->nome);
+
+}
