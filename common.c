@@ -15,9 +15,9 @@
 *      caso não existam disponíveis retorna 0;                                      *
 *   float consumo() -> calcula o consumo e retorna o resultado;                     *
 *   void add_aparelho() -> adiciona um aparlho a um setor;                          *
-*   float calcular_cve_gasto() -> calcula e retorna o consumo em escudos;  *
+*   float calcular_cve_gasto() -> calcula e retorna o consumo em escudos;           *
 *   void show_dados_setor() -> mostra dados de cada setor;                          *
-*   void analisar_dados() -> Analisa se todos os dados foram colocados;             *                                                      *
+*   void analisar_dados() -> Analisa se todos os dados foram colocados;             *
 *                                                                                   *
 * Estruturas:                                                                       *
 *   struct aparelhos -> "define" um aparelho                                        *
