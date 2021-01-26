@@ -205,7 +205,7 @@ float calcular_cve_gasto(SETOR ArraySetor[], float valor_unitario) {
 
     float valor_total = 0;
     int i, j;
-    printf("ARRAYSETOR counter: %d | aparelho counter: %d\n"); // For tests
+    // printf("ARRAYSETOR counter: %d | aparelho counter: %d\n"); // For tests
     for (i = 0 ; i < ArraySetor->counter ; i++) {
 		
         for (j = 0 ; j < ArraySetor->aparelho->counter ; j++) {
