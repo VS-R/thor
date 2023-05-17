@@ -1,5 +1,5 @@
 # THOR
-THOR is an energy consumption simulator
+THOR is an energy consumption simulator made as a college project.
 
 **Fully written in C language**
 
